@@ -170,30 +170,96 @@ portfolioItems.forEach(item => {
 const lightbox = document.getElementById('lightbox');
 const lightboxClose = document.getElementById('lightboxClose');
 const lightboxImage = document.getElementById('lightboxImage');
+const lightboxVideo = document.getElementById('lightboxVideo');
 const lightboxCaption = document.getElementById('lightboxCaption');
 const lightboxPrev = document.getElementById('lightboxPrev');
 const lightboxNext = document.getElementById('lightboxNext');
+const lightboxContent = document.querySelector('.lightbox-content');
 const portfolioImages = document.querySelectorAll('.portfolio-image');
 let currentImageIndex = 0;
-let visiblePortfolioItems = Array.from(portfolioItems);
+let visiblePortfolioItems = [];
+let isVideo = false;
+let isFullscreen = false;
 
 // Open lightbox when clicking on portfolio item
 portfolioImages.forEach((image, index) => {
-    image.addEventListener('click', () => {
+    image.style.cursor = 'pointer';
+    image.addEventListener('click', (e) => {
+        e.stopPropagation();
         currentImageIndex = index;
+        updateVisibleItems();
         openLightbox(index);
     });
 });
 
+// Toggle fullscreen
+lightboxContent.addEventListener('dblclick', toggleFullscreen);
+
+// Close lightbox when clicking outside the content
+lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+        closeLightbox();
+    }
+});
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        lightboxContent.requestFullscreen().catch(err => {
+            console.error(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+        isFullscreen = true;
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+            isFullscreen = false;
+        }
+    }
+}
+
+// Handle fullscreen change event
+document.addEventListener('fullscreenchange', () => {
+    isFullscreen = !!document.fullscreenElement;
+});
+
 function openLightbox(index) {
-    const imageElement = portfolioImages[index];
+    if (index < 0 || index >= visiblePortfolioItems.length) return;
+    
+    const imageElement = visiblePortfolioItems[index].querySelector('.portfolio-image');
+    if (!imageElement) return;
+    
     const title = imageElement.getAttribute('data-title') || 'Portfolio Item';
     const description = imageElement.getAttribute('data-description') || 'Description';
+    const videoSrc = imageElement.getAttribute('data-video');
     
-    // Clone the image content
-    const imageContent = imageElement.querySelector('.portfolio-img').cloneNode(true);
-    lightboxImage.innerHTML = '';
-    lightboxImage.appendChild(imageContent);
+    // Check if it's a video
+    isVideo = !!videoSrc || imageElement.querySelector('video');
+    
+    // Show loading state
+    lightboxImage.innerHTML = '<div class="loading">Loading...</div>';
+    lightboxVideo.style.display = 'none';
+    
+    if (isVideo) {
+        // Handle video
+        lightboxVideo.src = videoSrc;
+        lightboxVideo.style.display = 'block';
+        lightboxImage.style.display = 'none';
+        lightboxVideo.play();
+    } else {
+        // Show image
+        const imageContent = imageElement.querySelector('.portfolio-img, .video-thumbnail img');
+        if (imageContent) {
+            const clonedContent = imageContent.cloneNode(true);
+            lightboxImage.innerHTML = '';
+            lightboxImage.appendChild(clonedContent);
+        } else {
+            // Fallback to placeholder
+            lightboxImage.innerHTML = '<div class="image-placeholder portfolio-img"><span>Portfolio Item</span></div>';
+        }
+        lightboxVideo.style.display = 'none';
+        lightboxImage.style.display = 'block';
+        lightboxVideo.pause();
+        lightboxVideo.src = '';
+    }
     
     // Update caption
     lightboxCaption.querySelector('h4').textContent = title;
@@ -208,38 +274,71 @@ function openLightbox(index) {
 }
 
 function closeLightbox() {
-    lightbox.classList.remove('active');
-    document.body.style.overflow = '';
+    lightbox.style.display = 'none';
+    document.body.style.overflow = 'auto';
+    
+    // Pause video when closing
+    if (isVideo) {
+        const video = lightboxVideo.querySelector('video');
+        if (video) {
+            video.pause();
+        }
+    }
+    
+    // Exit fullscreen when closing lightbox
+    if (isFullscreen && document.exitFullscreen) {
+        document.exitFullscreen();
+        isFullscreen = false;
+    }
 }
 
 function showNextImage() {
-    updateVisibleItems();
+    if (visiblePortfolioItems.length === 0) return;
     currentImageIndex = (currentImageIndex + 1) % visiblePortfolioItems.length;
-    const itemIndex = Array.from(portfolioItems).indexOf(visiblePortfolioItems[currentImageIndex]);
-    openLightbox(itemIndex);
+    openLightbox(currentImageIndex);
 }
 
 function showPrevImage() {
-    updateVisibleItems();
+    if (visiblePortfolioItems.length === 0) return;
     currentImageIndex = (currentImageIndex - 1 + visiblePortfolioItems.length) % visiblePortfolioItems.length;
-    const itemIndex = Array.from(portfolioItems).indexOf(visiblePortfolioItems[currentImageIndex]);
-    openLightbox(itemIndex);
+    openLightbox(currentImageIndex);
 }
 
 function updateVisibleItems() {
-    visiblePortfolioItems = Array.from(portfolioItems).filter(item => {
-        return item.style.display !== 'none';
-    });
-    // Update current index to match visible items
-    const currentItem = portfolioItems[Array.from(portfolioImages).indexOf(portfolioImages[currentImageIndex])];
-    currentImageIndex = visiblePortfolioItems.indexOf(currentItem);
-    if (currentImageIndex === -1) currentImageIndex = 0;
+    visiblePortfolioItems = Array.from(portfolioItems).filter(item => 
+        window.getComputedStyle(item).display !== 'none' && 
+        window.getComputedStyle(item).opacity !== '0' &&
+        window.getComputedStyle(item).visibility !== 'hidden'
+    );
+    
+    // Update current index if it's out of bounds
+    if (currentImageIndex >= visiblePortfolioItems.length) {
+        currentImageIndex = visiblePortfolioItems.length - 1;
+    }
+    if (currentImageIndex < 0 && visiblePortfolioItems.length > 0) {
+        currentImageIndex = 0;
+    }
 }
 
 // Event listeners for lightbox
 lightboxClose.addEventListener('click', closeLightbox);
 lightboxNext.addEventListener('click', showNextImage);
 lightboxPrev.addEventListener('click', showPrevImage);
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    if (lightbox.style.display === 'flex') {
+        if (e.key === 'Escape') {
+            closeLightbox();
+        } else if (e.key === 'ArrowRight') {
+            showNextImage();
+        } else if (e.key === 'ArrowLeft') {
+            showPrevImage();
+        } else if (e.key === 'f' || e.key === 'F') {
+            toggleFullscreen();
+        }
+    }
+});
 
 // Close lightbox when clicking outside
 lightbox.addEventListener('click', (e) => {
@@ -253,13 +352,73 @@ document.addEventListener('keydown', (e) => {
     if (lightbox.classList.contains('active')) {
         if (e.key === 'Escape') {
             closeLightbox();
-        } else if (e.key === 'ArrowRight') {
+        } else if (e.key === 'ArrowRight' && !isVideo) {
             showNextImage();
-        } else if (e.key === 'ArrowLeft') {
+        } else if (e.key === 'ArrowLeft' && !isVideo) {
             showPrevImage();
         }
     }
 });
+
+// Instagram Feed Setup
+async function setupInstagramFeed(username) {
+    const instagramFeed = document.getElementById('instagramFeedGrid');
+    
+    try {
+        // In a production environment, you would make an API call to your backend
+        // which would then call the Instagram Basic Display API with your access token
+        // For now, we'll use a simple approach with a fallback
+        
+        // Clear the loading state
+        instagramFeed.innerHTML = '';
+        
+        // Create a grid container for the Instagram posts
+        const grid = document.createElement('div');
+        grid.className = 'instagram-posts-grid';
+        
+        // Create a loading indicator
+        const loading = document.createElement('div');
+        loading.className = 'instagram-loading';
+        loading.textContent = 'Loading Instagram feed...';
+        instagramFeed.appendChild(loading);
+        
+        // In a real implementation, you would fetch the actual Instagram posts here
+        // For now, we'll show a message with a link to the Instagram profile
+        setTimeout(() => {
+            loading.remove();
+            grid.innerHTML = `
+                <div class="instagram-fallback">
+                    <p>📸 Follow us on Instagram to see our latest work!</p>
+                    <p class="instagram-note">Visit <a href="https://instagram.com/${username}" target="_blank">@${username}</a> for daily updates and behind-the-scenes content</p>
+                    <div class="instagram-cta">
+                        <a href="https://www.instagram.com/${username}/" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                            <span>📷</span> Follow @${username}
+                        </a>
+                    </div>
+                </div>
+            `;
+            instagramFeed.appendChild(grid);
+        }, 1000);
+        
+    } catch (error) {
+        console.error('Error loading Instagram feed:', error);
+        instagramFeed.innerHTML = `
+            <div class="instagram-error">
+                <p>Unable to load Instagram feed. Please visit our <a href="https://instagram.com/${username}" target="_blank">Instagram profile</a>.</p>
+            </div>
+        `;
+            // Show fallback if widget fails to load
+            const fallback = document.querySelector('.instagram-fallback');
+            if (fallback) {
+                fallback.style.display = 'block';
+                snapWidget.style.display = 'none';
+            }
+        };
+    }
+}
+
+// Initialize Instagram feed with username
+setupInstagramFeed('jmk_beauty_salon');
 
 // Testimonials Animation
 const testimonialCards = document.querySelectorAll('.testimonial-card');

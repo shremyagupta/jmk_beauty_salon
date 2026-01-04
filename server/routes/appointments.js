@@ -1,6 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const Appointment = require('../models/Appointment');
+const nodemailer = require('nodemailer');
+const axios = require('axios');
+
+// Setup nodemailer transporter if SMTP env vars are provided
+let mailTransporter = null;
+if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
+  mailTransporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587', 10),
+    secure: process.env.SMTP_SECURE === 'true',
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS
+    }
+  });
+}
 
 // Create appointment
 router.post('/', async (req, res) => {
@@ -32,6 +48,43 @@ router.post('/', async (req, res) => {
     });
 
     await appointment.save();
+    // Send notification to admin (email + optional webhook)
+    try {
+      if (mailTransporter && process.env.ADMIN_EMAIL) {
+        const adminMail = {
+          from: process.env.FROM_EMAIL || process.env.SMTP_USER,
+          to: process.env.ADMIN_EMAIL,
+          subject: `New appointment request: ${service} on ${date} ${time}`,
+          text: `New appointment request:\n\nName: ${name}\nEmail: ${email || 'N/A'}\nPhone: ${phone || 'N/A'}\nService: ${service}\nDate: ${date}\nTime: ${time}\nMessage: ${message || ''}\n\nView in admin panel to confirm.`
+        };
+        await mailTransporter.sendMail(adminMail);
+      }
+
+      // Optional webhook (Slack/Telegram/etc.)
+      if (process.env.NOTIFY_WEBHOOK_URL) {
+        axios.post(process.env.NOTIFY_WEBHOOK_URL, {
+          type: 'appointment_created',
+          appointment: {
+            id: appointment._id,
+            name, email, phone, service, date, time, message
+          }
+        }).catch(err => console.error('Webhook notify failed', err.message));
+      }
+
+      // Confirmation email to client (if email provided)
+      if (mailTransporter && email) {
+        const clientMail = {
+          from: process.env.FROM_EMAIL || process.env.SMTP_USER,
+          to: email,
+          subject: 'Appointment request received',
+          text: `Hi ${name},\n\nThanks for requesting an appointment for ${service} on ${date} at ${time}. We have received your request and will confirm shortly.\n\n- ${process.env.BUSINESS_NAME || 'The Team'}`
+        };
+        mailTransporter.sendMail(clientMail).catch(err => console.error('Client mail failed', err.message));
+      }
+    } catch (notifyErr) {
+      console.error('Appointment notification error:', notifyErr.message);
+    }
+
     res.status(201).json({ 
       message: 'Appointment requested successfully! We will confirm your appointment soon.',
       appointment 
@@ -105,4 +158,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+
+
 

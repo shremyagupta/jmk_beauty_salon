@@ -5,6 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JMK Beauty Salon and Spa - Your Beauty Destination</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gallery.css">
+    <style>
+        /* Google Reviews Styling */
+        .google-logo {
+            margin-left: auto;
+            opacity: 0.7;
+        }
+        
+        .google-logo svg {
+            fill: #4285F4;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0c14b;
+            color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .testimonial-rating {
+            color: #FFD700;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+    </style>
+    <!-- Razorpay Integration -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="payment.js" defer></script>
+    <script src="offers.js" defer></script>
+    <script src="features.js" defer></script>
+    <script src="google-reviews.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +61,7 @@
             <div class="nav-wrapper">
                 <div class="logo">
                     <h2>JMK Beauty</h2>
-                    <span class="tagline">Salon & Spa</span>
+                    <span class="tagline"> Salon & Spa</span>
                 </div>
                 <ul class="nav-menu" id="navMenu">
                     <li><a href="#home" class="nav-link">Home</a></li>
@@ -64,11 +109,11 @@
                     <p>With years of expertise in the beauty industry, we offer a wide range of services including hair styling, skincare, nail care, massage therapy, and more. We use only premium products and the latest techniques to ensure exceptional results.</p>
                     <div class="about-stats">
                         <div class="stat-item">
-                            <h4>500+</h4>
+                            <h4>2000+</h4>
                             <p>Happy Clients</p>
                         </div>
                         <div class="stat-item">
-                            <h4>10+</h4>
+                            <h4>7+</h4>
                             <p>Years Experience</p>
                         </div>
                         <div class="stat-item">
@@ -102,8 +147,10 @@
                         <li>Haircuts & Styling</li>
                         <li>Hair Coloring</li>
                         <li>Hair Treatments</li>
-                        <li>Extensions</li>
+                        <li>Hair Spa</li>
                     </ul>
+                    <div class="service-price">Starting at ₹500</div>
+                    <button class="btn btn-book" data-service="Hair Services" data-amount="500">Book Now</button>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">💅</div>
@@ -115,6 +162,8 @@
                         <li>Nail Art</li>
                         <li>Gel Polish</li>
                     </ul>
+                    <div class="service-price">Starting at ₹300</div>
+                    <button class="btn btn-book" data-service="Nail Care" data-amount="300">Book Now</button>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">✨</div>
@@ -126,6 +175,8 @@
                         <li>Acne Solutions</li>
                         <li>Hydrating Masks</li>
                     </ul>
+                    <div class="service-price">Starting at ₹800</div>
+                    <button class="btn btn-book" data-service="Facial & Skincare" data-amount="800">Book Now</button>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">💆</div>
@@ -137,6 +188,8 @@
                         <li>Hot Stone</li>
                         <li>Aromatherapy</li>
                     </ul>
+                    <div class="service-price">Starting at ₹1000</div>
+                    <button class="btn btn-book" data-service="Massage Therapy" data-amount="1000">Book Now</button>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">💄</div>
@@ -148,6 +201,8 @@
                         <li>Editorial Makeup</li>
                         <li>Makeup Lessons</li>
                     </ul>
+                    <div class="service-price">Starting at ₹1500</div>
+                    <button class="btn btn-book" data-service="Makeup Services" data-amount="1500">Book Now</button>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🧖</div>
@@ -155,10 +210,48 @@
                     <p>Complete spa experiences with multiple treatments</p>
                     <ul>
                         <li>Full Day Spa</li>
-                        <li>Couples Packages</li>
+                        <li>Pre-Wedding Packages</li>
                         <li>Detox Programs</li>
                         <li>Wellness Retreats</li>
                     </ul>
+                    <div class="service-price">Starting at ₹2500</div>
+                    <button class="btn btn-book" data-service="Spa Packages" data-amount="2500">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery removed; portfolio page now includes all images & videos -->
+
+    <!-- Salon Interior Section -->
+    <section id="interior" class="interior-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Salon Interior</h2>
+                <p class="section-subtitle">Step into our elegant and relaxing space</p>
+            </div>
+            <div class="interior-container">
+                <div class="interior-image">
+                    <img src="images/portfolio/Jmk beauty salon and spa Pandeypur ,Azamgarh road,VARANASI.webp" alt="JMK Beauty Salon Interior" class="img-responsive" style="width: 100%; max-width: 800px; height: auto; display: block; margin: 0 auto; border: 2px solid #FF6B6B; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="interior-overlay">
+                        <h3>Welcome to Our Oasis</h3>
+                        <p>Experience luxury and comfort in our beautifully designed salon</p>
+                    </div>
+                </div>
+                <div class="interior-features">
+                    <div class="feature">
+                        <div class="feature-icon">✨</div>
+                        <h4>Elegant Ambiance</h4>
+                        <p>Designed for your comfort and relaxation</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💆‍♀️</div>
+                        <h4>Premium Stations</h4>
+                        <p>State-of-the-art styling stations</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🌟</div>
+                        <h4>Luxury Experience</h4>
                 </div>
             </div>
         </div>
@@ -177,8 +270,239 @@
                 <button class="filter-btn" data-filter="makeup">Makeup</button>
                 <button class="filter-btn" data-filter="nails">Nails</button>
                 <button class="filter-btn" data-filter="spa">Spa</button>
+                <button class="filter-btn" data-filter="video">Videos</button>
             </div>
             <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Bridal Makeup 1 -->
+                <div class="portfolio-item" data-category="makeup">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Makeup" 
+                         data-description="Elegant bridal look with traditional jewelry">
+                        <img src="images/portfolio/580918914_17992201529887284_8706012718370803238_n.webp" alt="Bridal Makeup Look" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Makeup</h4>
+                            <p>Elegant bridal look with traditional jewelry</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bridal Makeup 2 -->
+                <div class="portfolio-item" data-category="makeup">
+                    <div class="portfolio-image" 
+                         data-title="Traditional Bridal" 
+                         data-description="Classic Indian bridal makeup with red and gold tones">
+                        <img src="images/portfolio/581317559_17992201532887284_5990740995617827618_n.webp" alt="Traditional Indian Bridal" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Traditional Bridal</h4>
+                            <p>Classic Indian bridal makeup with red and gold tones</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bridal Hair Style -->
+                <div class="portfolio-item" data-category="hair">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Hairstyle" 
+                         data-description="Elegant bridal updo with accessories">
+                        <img src="images/portfolio/582458295_17992201514887284_7360589902298771448_n.webp" alt="Bridal Hairstyle" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Hairstyle</h4>
+                            <p>Elegant bridal updo with accessories</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bridal Video 1 -->
+                <div class="portfolio-item" data-category="video">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Makeup Process" 
+                         data-description="Watch our bridal makeup transformation"
+                         data-video="images/portfolio/👰 by beauty😍, Glam by ❤. . . . . . #instagram #trendingreels #viralvideos #salon #newmusic #tr.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/👰 by beauty😍, Glam by ❤. . . . . . #instagram #trendingreels #viralvideos #salon #newmusic #tr.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Makeup Process</h4>
+                            <p>Watch our bridal makeup transformation</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bridal Video 2 -->
+                <div class="portfolio-item" data-category="video">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Hair Styling" 
+                         data-description="Professional bridal hair styling"
+                         data-video="images/portfolio/Hair smoothening #hairstyles #rebounding #smootheningtreatment #songs #makeover #bootox #bridals.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/Hair smoothening #hairstyles #rebounding #smootheningtreatment #songs #makeover #bootox #bridals.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Hair Styling</h4>
+                            <p>Professional bridal hair styling</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nail Art Video -->
+                <div class="portfolio-item" data-category="nails">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Nail Art" 
+                         data-description="Elegant nail designs for brides"
+                         data-video="images/portfolio/Nail art #nailartist #nails #naildesign #nailartaddict #trending 🔥🔥.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/Nail art #nailartist #nails #naildesign #nailartaddict #trending 🔥🔥.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Nail Art</h4>
+                            <p>Elegant nail designs for brides</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hair Treatment -->
+                <div class="portfolio-item" data-category="hair">
+                    <div class="portfolio-image" 
+                         data-title="Hair Treatment" 
+                         data-description="Professional hair care and treatment">
+                        <img src="images/portfolio/521008694_17979166142887284_4721023843676446949_n.webp" alt="Hair Treatment" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Hair Treatment</h4>
+                            <p>Professional hair care and treatment</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salon Interior -->
+                <div class="portfolio-item" data-category="salon">
+                    <div class="portfolio-image" 
+                         data-title="Salon Interior" 
+                         data-description="Our beautiful and relaxing salon space">
+                        <img src="images/portfolio/Jmk beauty salon and spa Pandeypur ,Azamgarh road,VARANASI.webp" alt="Salon Interior" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Salon Interior</h4>
+                            <p>Our beautiful and relaxing salon space</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mehendi Art -->
+                <div class="portfolio-item" data-category="makeup">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Mehendi" 
+                         data-description="Intricate bridal mehendi designs">
+                        <img src="images/portfolio/Mehendi.webp" alt="Bridal Mehendi" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Mehendi</h4>
+                            <p>Intricate bridal mehendi designs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hair Wash Video -->
+                <div class="portfolio-item" data-category="hair">
+                    <div class="portfolio-image" 
+                         data-title="Professional Hair Wash" 
+                         data-description="Relaxing and therapeutic hair wash experience"
+                         data-video="images/portfolio/Hair wash #makeupartist #hair #hairstylist #haircut #instagood #instagramers #instagram #trendi.webp">
+                        <img src="images/portfolio/Hair wash #makeupartist #hair #hairstylist #haircut #instagood #instagramers #instagram #trendi.webp" alt="Professional Hair Wash" loading="lazy">
+                        <div class="portfolio-overlay">
+                            <h4>Professional Hair Wash</h4>
+                            <p>Relaxing and therapeutic hair wash experience</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hair Highlights Video -->
+                <div class="portfolio-item" data-category="hair">
+                    <div class="portfolio-image" 
+                         data-title="Hair Highlights" 
+                         data-description="Beautiful dimensional hair coloring"
+                         data-video="images/portfolio/Hair highlights#hair #hairstylist #hairstyles #haircut #hairtutorial #hairgoals #makeupartist #i.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/Hair highlights#hair #hairstylist #hairstyles #haircut #hairtutorial #hairgoals #makeupartist #i.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Hair Highlights</h4>
+                            <p>Beautiful dimensional hair coloring</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hair Botox Video -->
+                <div class="portfolio-item" data-category="hair">
+                    <div class="portfolio-image" 
+                         data-title="Hair Botox Treatment" 
+                         data-description="Revitalizing hair treatment for smoothness"
+                         data-video="images/portfolio/Hair botox#instagood #instagram #instamood #hairstylist #botox.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/Hair botox#instagood #instagram #instamood #hairstylist #botox.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Hair Botox Treatment</h4>
+                            <p>Revitalizing hair treatment for smoothness</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Video 1 -->
+                <div class="portfolio-item" data-category="makeup">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Glamour" 
+                         data-description="Complete bridal transformation"
+                         data-video="images/portfolio/get.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/get.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Glamour</h4>
+                            <p>Complete bridal transformation</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Video 2 -->
+                <div class="portfolio-item" data-category="makeup">
+                    <div class="portfolio-image" 
+                         data-title="Evening Makeup" 
+                         data-description="Glamorous makeup for special occasions"
+                         data-video="images/portfolio/get (1).mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/get (1).mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Evening Makeup</h4>
+                            <p>Glamorous makeup for special occasions</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Video 3 -->
+                <div class="portfolio-item" data-category="makeup">
+                    <div class="portfolio-image" 
+                         data-title="Bridal Special" 
+                         data-description="Exclusive bridal makeup look"
+                         data-video="images/portfolio/✨✨#instagram #trendingreels #viralvideos #salon #newmusic #trending #oldsongs #viralreels #photo.mp4">
+                        <video class="portfolio-video" muted loop>
+                            <source src="images/portfolio/✨✨#instagram #trendingreels #viralvideos #salon #newmusic #trending #oldsongs #viralreels #photo.mp4" type="video/mp4">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <h4>Bridal Special</h4>
+                            <p>Exclusive bridal makeup look</p>
+                            <div class="video-play-icon">▶</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hair Styling -->
                 <div class="portfolio-item" data-category="hair">
                     <div class="portfolio-image" data-title="Hair Styling" data-description="Elegant updo for special occasion">
                         <div class="image-placeholder portfolio-img">
@@ -190,6 +514,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Bridal Makeup -->
                 <div class="portfolio-item" data-category="makeup">
                     <div class="portfolio-image" data-title="Bridal Makeup" data-description="Natural and elegant bridal look">
                         <div class="image-placeholder portfolio-img">
@@ -278,6 +604,81 @@
                         </div>
                     </div>
                 </div>
+                <!-- Video items will be added here when you share videos -->
+                <!-- Example video item structure (uncomment and update when you have videos):
+                <div class="portfolio-item" data-category="video hair">
+                    <div class="portfolio-image portfolio-video" data-title="Hair Styling Process" data-description="Watch our expert stylist in action" data-video="portfolio/videos/hair-styling.mp4">
+                        <div class="video-thumbnail">
+                            <img src="portfolio/images/video-thumbnail.jpg" alt="Video thumbnail">
+                            <div class="play-button">▶</div>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <h4>Hair Styling Process</h4>
+                            <p>Watch our expert stylist in action</p>
+                            <span class="video-badge">VIDEO</span>
+                        </div>
+                    </div>
+                </div>
+    <section id="instagram-feed" class="instagram-feed">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Follow Us on Instagram</h2>
+                <p class="section-subtitle">@jmk_beauty_salon - Tag us in your beauty transformations!</p>
+            </div>
+            <div class="instagram-container">
+                <div class="instagram-posts-grid" id="instagramFeedGrid">
+                    <!-- Posts will be loaded here dynamically -->
+                    <div class="instagram-fallback">
+                        <p>✨ Experience Our Work on Instagram ✨</p>
+                        <p class="instagram-note">Follow <a href="https://instagram.com/jmk_beauty_salon" target="_blank">@jmk_beauty_salon</a> for daily beauty inspiration, special offers, and behind-the-scenes content!</p>
+                        <div class="instagram-cta">
+                            <a href="https://www.instagram.com/jmk_beauty_salon/" class="btn" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-instagram"></i> Follow Us on Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="instagram-cta">
+                    <p class="instagram-note">DM us for appointments or tag us in your photos for a chance to be featured!</p>
+                    <a href="https://wa.me/919369505408" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                    <a href="tel:+919369505408" class="btn btn-outline">
+                        <i class="fas fa-phone"></i> Call Now
+                    </a>
+                </div>
+                
+                <!-- Instagram Highlights -->
+                <div class="highlights-container">
+                    <h3 class="highlights-title">Our Services</h3>
+                    <div class="highlights-grid">
+                        <a href="#" class="highlight-item" data-category="bridal">
+                            <div class="highlight-cover">
+                                <span>Bridal Makeup</span>
+                            </div>
+                            <p>Bridal</p>
+                        </a>
+                        <a href="#" class="highlight-item" data-category="party">
+                            <div class="highlight-cover">
+                                <span>Party Makeup</span>
+                            </div>
+                            <p>Party</p>
+                        </a>
+                        <a href="#" class="highlight-item" data-category="hair">
+                            <div class="highlight-cover">
+                                <span>Hair Styling</span>
+                            </div>
+                            <p>Hair</p>
+                        </a>
+                        <a href="#" class="highlight-item" data-category="skincare">
+                            <div class="highlight-cover">
+                                <span>Skin Care</span>
+                            </div>
+                            <p>Skin Care</p>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -290,45 +691,7 @@
                 <p class="section-subtitle">Real experiences from our valued customers</p>
             </div>
             <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <span>★★★★★</span>
-                    </div>
-                    <p class="testimonial-text">"Absolutely amazing experience! The staff is professional, friendly, and truly talented. My hair has never looked better. Highly recommend JMK Beauty!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">S</div>
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Regular Client</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <span>★★★★★</span>
-                    </div>
-                    <p class="testimonial-text">"The spa treatments here are incredible! I felt completely relaxed and rejuvenated. The facial was exactly what I needed. Will definitely be back!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">M</div>
-                        <div class="author-info">
-                            <h4>Maria Garcia</h4>
-                            <p>Spa Enthusiast</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="testimonial-rating">
-                        <span>★★★★★</span>
-                    </div>
-                    <p class="testimonial-text">"Best bridal makeup I've ever had! The team made me feel like a princess on my special day. The attention to detail was outstanding. Thank you!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">E</div>
-                        <div class="author-info">
-                            <h4>Emily Chen</h4>
-                            <p>Bride</p>
-                        </div>
-                    </div>
-                </div>
+                <!-- Google Reviews will be dynamically inserted here -->
             </div>
         </div>
     </section>
@@ -344,6 +707,10 @@
                     <div class="image-placeholder portfolio-img">
                         <span>Portfolio Image</span>
                     </div>
+                    <!-- Video player will be inserted here for video items -->
+                    <video id="lightboxVideo" controls style="display: none; width: 100%; max-height: 80vh;">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
                 <div class="lightbox-caption" id="lightboxCaption">
                     <h4>Portfolio Item</h4>
@@ -363,49 +730,49 @@
             <div class="contact-content">
                 <div class="contact-info">
                     <div class="info-item">
-                        <div class="info-icon">📍</div>
+                        <i class="fas fa-phone"></i>
                         <div class="info-text">
-                            <h4>Address</h4>
-                            <p>123 Beauty Street<br>Your City, State 12345</p>
+                            <h4>Call Us</h4>
+                            <p><a href="tel:+919369505408">+91 93695 05408</a></p>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">📞</div>
+                        <i class="fab fa-instagram"></i>
                         <div class="info-text">
-                            <h4>Phone</h4>
-                            <p>(555) 123-4567</p>
+                            <h4>Follow Us</h4>
+                            <p><a href="https://instagram.com/jmk_beauty_salon" target="_blank">@jmk_beauty_salon</a></p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">✉️</div>
                         <div class="info-text">
                             <h4>Email</h4>
-                            <p>info@jmkbeauty.com</p>
+                            <p>jmkbeautysalon.23@gmail.com</p>
                         </div>
                     </div>
                     <div class="info-item">
                         <div class="info-icon">🕒</div>
                         <div class="info-text">
                             <h4>Hours</h4>
-                            <p>Mon - Sat: 9:00 AM - 7:00 PM<br>Sunday: 10:00 AM - 5:00 PM</p>
+                            <p>Monday - Sunday: 10:00 AM - 8:00 PM</p>
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="Your Name" required>
+                <div class="map-container">
+                    <h3>Find Us</h3>
+                    <div class="map-responsive">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3605.4930225179032!2d82.99079607509574!3d25.35478792530022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398e2fe14a09b29b%3A0x2dec08047a526a0b!2sJMK!5e0!3m2!1sen!2sus!4v1763382028583!5m2!1sen!2sus" 
+                                width="100%" 
+                                height="300" 
+                                style="border:0; border-radius: 10px;" 
+                                allowfullscreen="" 
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
-                    <div class="form-group">
-                        <input type="email" id="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="phone" placeholder="Your Phone">
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+                    <div class="address">
+                        <p><i class="fas fa-map-marker-alt"></i> JMK Beauty Salon & Spa, 1st Floor, No. 123, GST Road, Chennai - 600016, Tamil Nadu</p>
+                        <a href="https://maps.app.goo.gl/MK294Z6F2Cg6Ziuv8" target="_blank" class="btn btn-map">
             </div>
         </div>
     </section>
@@ -442,18 +809,18 @@
                     <h4>Follow Us</h4>
                     <div class="social-links">
                         <a href="#" class="social-link">Facebook</a>
-                        <a href="#" class="social-link">Instagram</a>
+                        <a href="https://www.instagram.com/jmk_beauty_salon/" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
                         <a href="#" class="social-link">Twitter</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 JMK Beauty Salon and Spa. All rights reserved.</p>
+                <p>&copy; 2019 JMK Beauty Salon and Spa. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
+    <script src="feedback.js"></script>
 </body>
 </html>
-

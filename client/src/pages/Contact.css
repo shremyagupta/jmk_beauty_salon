@@ -106,3 +106,28 @@
     }
 }
 
+/* Confirmation modal styles */
+.confirmation-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45);
+    z-index: 2000;
+}
+.confirmation-card {
+    background: #fff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 480px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+.confirmation-card h3 { margin-top: 0; }
+.confirmation-list { list-style: none; padding: 0; margin: 0.5rem 0 1rem 0; }
+.confirmation-list li { margin-bottom: 0.4rem; }
+.confirmation-actions { text-align: right; }
+.confirmation-actions .btn { padding: 8px 14px; border-radius: 6px; border: none; background: var(--primary-color); color: #fff; cursor: pointer; }
+
+

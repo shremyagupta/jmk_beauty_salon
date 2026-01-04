@@ -1,0 +1,59 @@
+.google-reviews {
+  margin-top: 2rem;
+  padding: 1rem 0;
+}
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.reviews-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.rating-summary {
+  font-weight: 700;
+  color: #f59e0b;
+}
+.reviews-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.review-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.review-author {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.author-initial {
+  width: 36px;
+  height: 36px;
+  background: #fde68a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.review-rating {
+  margin-bottom: 0.5rem;
+  color: #f59e0b;
+}
+.review-text {
+  margin: 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+.reviews-loading, .reviews-error, .no-reviews {
+  padding: 1rem 0;
+  color: #666;
+}

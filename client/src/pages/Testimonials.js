@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Testimonials.css';
+import Reviews from '../components/Reviews';
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -13,7 +14,12 @@ const Testimonials = () => {
   const fetchTestimonials = async () => {
     try {
       const response = await axios.get('/api/testimonials');
-      setTestimonials(response.data);
+      const data = response.data || [];
+      if (Array.isArray(data) && data.length > 0) {
+        setTestimonials(data);
+      } else {
+        setTestimonials(getDefaultTestimonials());
+      }
     } catch (error) {
       console.error('Error fetching testimonials:', error);
       setTestimonials(getDefaultTestimonials());
@@ -92,10 +98,15 @@ const Testimonials = () => {
             </div>
           ))}
         </div>
+        {/* Google Reviews */}
+        <Reviews />
       </div>
     </section>
   );
 };
 
 export default Testimonials;
+
+
+
 

@@ -13,7 +13,12 @@ const Services = () => {
   const fetchServices = async () => {
     try {
       const response = await axios.get('/api/services');
-      setServices(response.data);
+      const data = response.data || [];
+      if (Array.isArray(data) && data.length > 0) {
+        setServices(data);
+      } else {
+        setServices(getDefaultServices());
+      }
     } catch (error) {
       console.error('Error fetching services:', error);
       // Fallback to default services if API fails

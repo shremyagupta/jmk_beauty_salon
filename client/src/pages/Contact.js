@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Contact.css';
+import '../components/Reviews.css';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationData, setConfirmationData] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,6 +31,12 @@ const Contact = () => {
     try {
       const response = await axios.post('/api/contact', formData);
       setSubmitMessage('Thank you for contacting us! We will get back to you soon.');
+      // Show a stronger confirmation modal for booking-related submissions
+      const isBooking = formData.subject && formData.subject.toLowerCase().includes('appointment');
+      if (isBooking) {
+        setConfirmationData({ ...formData });
+        setShowConfirmation(true);
+      }
       setFormData({
         name: '',
         email: '',
@@ -201,6 +210,22 @@ const Contact = () => {
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
+          {showConfirmation && confirmationData && (
+            <div className="confirmation-modal" role="dialog" aria-modal="true">
+              <div className="confirmation-card">
+                <h3>Appointment Requested</h3>
+                <p>Thank you, {confirmationData.name || 'Guest'} — we received your request for <strong>{confirmationData.subject}</strong>.</p>
+                <ul className="confirmation-list">
+                  {confirmationData.email && <li><strong>Email:</strong> {confirmationData.email}</li>}
+                  {confirmationData.phone && <li><strong>Phone:</strong> {confirmationData.phone}</li>}
+                  {confirmationData.message && <li><strong>Note:</strong> {confirmationData.message}</li>}
+                </ul>
+                <div className="confirmation-actions">
+                  <button className="btn" onClick={() => setShowConfirmation(false)}>Close</button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
