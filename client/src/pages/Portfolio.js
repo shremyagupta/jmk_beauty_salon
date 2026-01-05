@@ -17,12 +17,19 @@ const Portfolio = () => {
   const touchStartX = React.useRef(null);
   const touchDeltaX = React.useRef(0);
 
+  // Initial load of portfolio items
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchPortfolio();
   }, []);
 
+  // Update filtered items when filter or data change
   useEffect(() => {
-    filterPortfolio();
+    if (activeFilter === 'all') {
+      setFilteredItems(portfolioItems);
+    } else {
+      setFilteredItems(portfolioItems.filter(item => item.category === activeFilter));
+    }
   }, [activeFilter, portfolioItems]);
 
   const fetchPortfolio = async () => {
@@ -70,14 +77,6 @@ const Portfolio = () => {
     { _id: '12', title: 'Skincare Routine', description: 'Daily skincare beauty routine', category: 'skincare' }
   ];
 
-  const filterPortfolio = () => {
-    if (activeFilter === 'all') {
-      setFilteredItems(portfolioItems);
-    } else {
-      setFilteredItems(portfolioItems.filter(item => item.category === activeFilter));
-    }
-  };
-
   // derive featured items from portfolioItems
   useEffect(() => {
     const featured = portfolioItems.filter(i => i.featured).slice(0, 5);
@@ -89,7 +88,7 @@ const Portfolio = () => {
     if (heroIndex >= featuredItems.length && featuredItems.length > 0) {
       setHeroIndex(0);
     }
-  }, [featuredItems]);
+  }, [featuredItems, heroIndex]);
 
   const scrollToHero = (index) => {
     const track = heroRef.current;
@@ -122,7 +121,7 @@ const Portfolio = () => {
       nextHero();
     }, 4000);
     return () => clearInterval(heroTimerRef.current);
-  }, [featuredItems, lightboxOpen]);
+  }, [featuredItems, lightboxOpen, nextHero]);
 
 
   const handleFilterClick = (filter) => {
@@ -172,7 +171,7 @@ const Portfolio = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightboxOpen, currentImage, filteredItems]);
+  }, [lightboxOpen, currentImage, filteredItems, navigateImage]);
 
   if (loading) {
     return (
