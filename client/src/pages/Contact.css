@@ -4,8 +4,8 @@
 }
 
 .contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
     gap: 60px;
 }
 
@@ -25,17 +25,23 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    align-items: center;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .info-item {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    justify-content: center;
 }
 
 .info-icon {
     font-size: 2rem;
     min-width: 50px;
+    text-align: center;
 }
 
 .info-text h4 {

@@ -1,18 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
+
+const sections = ['home', 'about', 'services', 'portfolio', 'testimonials', 'contact'];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 100);
+
+      // Update active section based on scroll position
+      let current = 'home';
+      let minOffset = Number.POSITIVE_INFINITY;
+
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const rect = el.getBoundingClientRect();
+        const offset = Math.abs(rect.top);
+        if (offset < minOffset) {
+          minOffset = offset;
+          current = id;
+        }
+      });
+
+      setActiveSection(current);
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -24,72 +43,79 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  const isActive = (path) => {
-    return location.pathname === path;
+  const handleNavClick = (e, targetId) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      const yOffset = -80; // adjust if navbar height changes
+      const y = element.getBoundingClientRect().top + window.scrollY + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    closeMenu();
   };
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
         <div className="nav-wrapper">
-          <Link to="/" className="logo" onClick={closeMenu}>
+          <a href="#home" className="logo" onClick={(e) => handleNavClick(e, 'home')}>
             <h2>JMK Beauty</h2>
             <span className="tagline">Salon & Spa</span>
-          </Link>
+          </a>
           <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
             <li>
-              <Link 
-                to="/" 
-                className={`nav-link ${isActive('/') ? 'active' : ''}`}
-                onClick={closeMenu}
+              <a 
+                href="#home" 
+                className={`nav-link ${activeSection === 'home' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'home')}
               >
                 Home
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/about" 
-                className={`nav-link ${isActive('/about') ? 'active' : ''}`}
-                onClick={closeMenu}
+              <a 
+                href="#about" 
+                className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'about')}
               >
                 About
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/services" 
-                className={`nav-link ${isActive('/services') ? 'active' : ''}`}
-                onClick={closeMenu}
+              <a 
+                href="#services" 
+                className={`nav-link ${activeSection === 'services' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'services')}
               >
                 Services
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/portfolio" 
-                className={`nav-link ${isActive('/portfolio') ? 'active' : ''}`}
-                onClick={closeMenu}
+              <a 
+                href="#portfolio" 
+                className={`nav-link ${activeSection === 'portfolio' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'portfolio')}
               >
                 Portfolio
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/testimonials" 
-                className={`nav-link ${isActive('/testimonials') ? 'active' : ''}`}
-                onClick={closeMenu}
+              <a 
+                href="#testimonials" 
+                className={`nav-link ${activeSection === 'testimonials' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'testimonials')}
               >
                 Testimonials
-              </Link>
+              </a>
             </li>
             <li>
-              <Link 
-                to="/contact" 
-                className={`nav-link ${isActive('/contact') ? 'active' : ''}`}
-                onClick={closeMenu}
+              <a 
+                href="#contact" 
+                className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
+                onClick={(e) => handleNavClick(e, 'contact')}
               >
                 Contact
-              </Link>
+              </a>
             </li>
           </ul>
           <div 
