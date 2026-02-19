@@ -78,9 +78,17 @@ const Portfolio = () => {
 
   // derive featured items from portfolioItems
   useEffect(() => {
-    const featured = portfolioItems.filter(i => i.featured).slice(0, 5);
-    setFeaturedItems(featured.length ? featured : portfolioItems.slice(0, 3));
-  }, [portfolioItems]);
+  if (!Array.isArray(portfolioItems)) return;
+
+  const featured = portfolioItems
+    .filter(i => i.featured)
+    .slice(0, 5);
+
+  setFeaturedItems(
+    featured.length ? featured : portfolioItems.slice(0, 3)
+  );
+}, [portfolioItems]);
+
 
   useEffect(() => {
     // ensure hero index is within bounds when featuredItems change
