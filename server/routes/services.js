@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Service = require('../models/Service');
+const { authenticateToken, authorizeRoles } = require('../middleware/adminAuth');
 
 // Get all services
 router.get('/', async (req, res) => {
@@ -38,8 +39,8 @@ router.get('/category/:category', async (req, res) => {
   }
 });
 
-// Create service (Admin only - add auth middleware later)
-router.post('/', async (req, res) => {
+// Create service (Admin only)
+router.post('/', authenticateToken, authorizeRoles('admin'), async (req, res) => {
   try {
     const service = new Service(req.body);
     await service.save();
@@ -49,8 +50,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update service
-router.put('/:id', async (req, res) => {
+// Update service (Admin only)
+router.put('/:id', authenticateToken, authorizeRoles('admin'), async (req, res) => {
   try {
     const service = await Service.findByIdAndUpdate(
       req.params.id,
@@ -66,8 +67,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete service
-router.delete('/:id', async (req, res) => {
+// Delete service (Admin only)
+router.delete('/:id', authenticateToken, authorizeRoles('admin'), async (req, res) => {
   try {
     const service = await Service.findByIdAndDelete(req.params.id);
     if (!service) {

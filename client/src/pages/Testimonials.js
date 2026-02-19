@@ -6,27 +6,33 @@ import Reviews from '../components/Reviews';
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState('');
+  const [role, setRole] = useState('');
+  const [rating, setRating] = useState(5);
+  const [text, setText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await axios.get('/api/testimonials');
+        const data = response.data || [];
+        if (Array.isArray(data) && data.length > 0) {
+          setTestimonials(data);
+        } else {
+          setTestimonials(getDefaultTestimonials());
+        }
+      } catch (error) {
+        console.error('Error fetching testimonials:', error);
+        setTestimonials(getDefaultTestimonials());
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchTestimonials();
   }, []);
-
-  const fetchTestimonials = async () => {
-    try {
-      const response = await axios.get('/api/testimonials');
-      const data = response.data || [];
-      if (Array.isArray(data) && data.length > 0) {
-        setTestimonials(data);
-      } else {
-        setTestimonials(getDefaultTestimonials());
-      }
-    } catch (error) {
-      console.error('Error fetching testimonials:', error);
-      setTestimonials(getDefaultTestimonials());
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getDefaultTestimonials = () => [
     {
@@ -57,6 +63,29 @@ const Testimonials = () => {
 
   const renderStars = (rating) => {
     return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitMessage('');
+    setSubmitting(true);
+    try {
+      await axios.post('/api/testimonials', {
+        name,
+        role,
+        rating: Number(rating),
+        text,
+      });
+      setSubmitMessage('Thank you! Your review has been submitted and will appear after approval.');
+      setName('');
+      setRole('');
+      setRating(5);
+      setText('');
+    } catch (error) {
+      setSubmitMessage('Sorry, we could not submit your review. Please try again later.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -100,6 +129,51 @@ const Testimonials = () => {
         </div>
         {/* Google Reviews */}
         <Reviews />
+
+        <div className="testimonial-form-wrapper">
+          <h3 className="testimonial-form-title">Share Your Experience</h3>
+          <p className="testimonial-form-subtitle">Rate our services and leave a short review.</p>
+          <form className="testimonial-form" onSubmit={handleSubmit}>
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Your role (e.g. Bride, Regular Client)"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              />
+            </div>
+            <div className="form-row">
+              <label className="rating-label">
+                Rating:
+                <select value={rating} onChange={(e) => setRating(e.target.value)}>
+                  <option value={5}>5 - Excellent</option>
+                  <option value={4}>4 - Very Good</option>
+                  <option value={3}>3 - Good</option>
+                  <option value={2}>2 - Fair</option>
+                  <option value={1}>1 - Poor</option>
+                </select>
+              </label>
+            </div>
+            <textarea
+              rows="3"
+              placeholder="Write a short review..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              required
+            />
+            <button type="submit" className="testimonial-submit" disabled={submitting}>
+              {submitting ? 'Submitting...' : 'Submit Review'}
+            </button>
+            {submitMessage && <p className="testimonial-form-message">{submitMessage}</p>}
+          </form>
+        </div>
       </div>
     </section>
   );

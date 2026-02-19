@@ -1,12 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const Testimonial = require('../models/Testimonial');
+const { authenticateToken, authorizeRoles } = require('../middleware/adminAuth');
 
 // Get all approved testimonials
 router.get('/', async (req, res) => {
   try {
     const testimonials = await Testimonial.find({ isApproved: true })
       .sort({ featured: -1, createdAt: -1 });
+    res.json(testimonials);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Admin: get all testimonials (approved and pending)
+router.get('/admin/all', authenticateToken, authorizeRoles('admin', 'staff'), async (req, res) => {
+  try {
+    const testimonials = await Testimonial.find().sort({ createdAt: -1 });
     res.json(testimonials);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -41,7 +52,7 @@ router.get('/featured/all', async (req, res) => {
   }
 });
 
-// Create testimonial
+// Create testimonial (public, requires admin approval)
 router.post('/', async (req, res) => {
   try {
     const testimonial = new Testimonial({
@@ -59,7 +70,7 @@ router.post('/', async (req, res) => {
 });
 
 // Update testimonial (Admin only)
-router.put('/:id', async (req, res) => {
+router.put('/:id', authenticateToken, authorizeRoles('admin'), async (req, res) => {
   try {
     const testimonial = await Testimonial.findByIdAndUpdate(
       req.params.id,
@@ -75,8 +86,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete testimonial
-router.delete('/:id', async (req, res) => {
+// Delete testimonial (Admin only)
+router.delete('/:id', authenticateToken, authorizeRoles('admin'), async (req, res) => {
   try {
     const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
     if (!testimonial) {

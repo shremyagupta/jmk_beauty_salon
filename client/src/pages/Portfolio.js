@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './Portfolio.css';
 
@@ -17,22 +17,7 @@ const Portfolio = () => {
   const touchStartX = React.useRef(null);
   const touchDeltaX = React.useRef(0);
 
-  // Initial load of portfolio items
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    fetchPortfolio();
-  }, []);
-
-  // Update filtered items when filter or data change
-  useEffect(() => {
-    if (activeFilter === 'all') {
-      setFilteredItems(portfolioItems);
-    } else {
-      setFilteredItems(portfolioItems.filter(item => item.category === activeFilter));
-    }
-  }, [activeFilter, portfolioItems]);
-
-  const fetchPortfolio = async () => {
+  const fetchPortfolio = useCallback(async () => {
     try {
       const response = await axios.get('/api/portfolio');
       const apiItems = response.data || [];
@@ -60,7 +45,21 @@ const Portfolio = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  // Initial load of portfolio items
+  useEffect(() => {
+    fetchPortfolio();
+  }, [fetchPortfolio]);
+
+  // Update filtered items when filter or data change
+  useEffect(() => {
+    if (activeFilter === 'all') {
+      setFilteredItems(portfolioItems);
+    } else {
+      setFilteredItems(portfolioItems.filter(item => item.category === activeFilter));
+    }
+  }, [activeFilter, portfolioItems]);
 
   const getDefaultPortfolio = () => [
     { _id: '1', title: 'Bridal Makeup', description: 'Traditional South Asian bridal look with gold jewelry', category: 'makeup' },
@@ -90,29 +89,29 @@ const Portfolio = () => {
     }
   }, [featuredItems, heroIndex]);
 
-  const scrollToHero = (index) => {
+  const scrollToHero = useCallback((index) => {
     const track = heroRef.current;
     if (!track) return;
     const child = track.children[index];
     if (!child) return;
     track.scrollTo({ left: child.offsetLeft - 12, behavior: 'smooth' });
-  };
+  }, []);
 
-  const nextHero = () => {
+  const nextHero = useCallback(() => {
     setHeroIndex((s) => {
       const next = (s + 1) % Math.max(1, featuredItems.length);
       scrollToHero(next);
       return next;
     });
-  };
+  }, [featuredItems, scrollToHero]);
 
-  const prevHero = () => {
+  const prevHero = useCallback(() => {
     setHeroIndex((s) => {
       const next = (s - 1 + Math.max(1, featuredItems.length)) % Math.max(1, featuredItems.length);
       scrollToHero(next);
       return next;
     });
-  };
+  }, [featuredItems, scrollToHero]);
 
   useEffect(() => {
     // autoplay (paused while lightbox is open)
@@ -142,7 +141,7 @@ const Portfolio = () => {
     document.body.style.overflow = '';
   };
 
-  const navigateImage = (direction) => {
+  const navigateImage = useCallback((direction) => {
     // Defensive guards: ensure currentImage exists and there are filtered items
     if (!currentImage || !filteredItems || filteredItems.length === 0) return;
     const currentIndex = filteredItems.findIndex(item => item._id === currentImage._id);
@@ -157,7 +156,7 @@ const Portfolio = () => {
     }
 
     setCurrentImage(filteredItems[newIndex]);
-  };
+  }, [currentImage, filteredItems]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

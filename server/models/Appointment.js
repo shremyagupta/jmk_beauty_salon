@@ -33,6 +33,16 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  // Optional reference to the logged in user who created this appointment
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  // Optional list of requested services or preferences from the user
+  requestedServices: [{
+    type: String,
+    trim: true
+  }],
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'completed', 'cancelled'],

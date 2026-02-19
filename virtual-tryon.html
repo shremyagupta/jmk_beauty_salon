@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Virtual Beauty Try-On - JMK Beauty Salon</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gallery.css">
+    <link rel="stylesheet" href="virtual-tryon.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <h2>JMK Beauty</h2>
+                    <span class="tagline"> Salon & Spa</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html#home" class="nav-link">Home</a></li>
+                    <li><a href="index.html#about" class="nav-link">About</a></li>
+                    <li><a href="index.html#services" class="nav-link">Services</a></li>
+                    <li><a href="virtual-tryon.html" class="nav-link active">Virtual Try-On</a></li>
+                    <li><a href="index.html#portfolio" class="nav-link">Portfolio</a></li>
+                    <li><a href="index.html#testimonials" class="nav-link">Testimonials</a></li>
+                    <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Virtual Try-On Section -->
+    <section id="virtual-tryon" class="virtual-tryon-section">
+        <div class="virtual-tryon-container">
+            <div class="virtual-tryon-header">
+                <h2 class="virtual-tryon-title">AI Virtual Beauty Try-On</h2>
+                <p class="virtual-tryon-subtitle">Experience our services with advanced augmented reality technology</p>
+            </div>
+            
+            <div class="tryon-interface">
+                <div class="webcam-container">
+                    <div class="webcam-view">
+                        <video id="webcam" style="display: none;"></video>
+                        <canvas id="canvas"></canvas>
+                        <div class="webcam-placeholder" id="webcamPlaceholder">
+                            <p>📸 Click "Start Camera" to begin your virtual try-on experience</p>
+                        </div>
+                    </div>
+                    <div class="webcam-controls">
+                        <button class="btn-webcam primary" id="startWebcam">Start Camera</button>
+                        <button class="btn-webcam secondary" id="stopWebcam" disabled>Stop Camera</button>
+                        <button class="btn-webcam primary" id="capturePhoto" disabled>📸 Save Look</button>
+                    </div>
+                </div>
+                
+                <div class="options-panel">
+                    <div class="options-section">
+                        <h3 class="options-title">💄 Lip Colors</h3>
+                        <div class="color-options">
+                            <div class="color-option" style="background-color: #E6B89C;" data-color="#E6B89C"></div>
+                            <div class="color-option" style="background-color: #D4A574;" data-color="#D4A574"></div>
+                            <div class="color-option" style="background-color: #FF6B6B;" data-color="#FF6B6B"></div>
+                            <div class="color-option" style="background-color: #FF1744;" data-color="#FF1744"></div>
+                            <div class="color-option" style="background-color: #E91E63;" data-color="#E91E63"></div>
+                            <div class="color-option" style="background-color: #9C27B0;" data-color="#9C27B0"></div>
+                            <div class="color-option" style="background-color: #673AB7;" data-color="#673AB7"></div>
+                            <div class="color-option" style="background-color: #3F51B5;" data-color="#3F51B5"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="options-section">
+                        <h3 class="options-title">✨ Makeup Styles</h3>
+                        <div class="style-options">
+                            <div class="style-option" data-style="natural">Natural</div>
+                            <div class="style-option" data-style="glamorous">Glamorous</div>
+                            <div class="style-option" data-style="professional">Professional</div>
+                            <div class="style-option" data-style="party">Party</div>
+                            <div class="style-option" data-style="bridal">Bridal</div>
+                            <div class="style-option" data-style="trendy">Trendy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="options-section">
+                        <h3 class="options-title">🎨 Intensity</h3>
+                        <div class="intensity-slider">
+                            <input type="range" id="intensitySlider" class="slider" min="0" max="100" value="50">
+                            <div class="intensity-label">
+                                <span>Subtle</span>
+                                <span>Bold</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beauty Quiz Section -->
+    <section id="beauty-quiz" class="beauty-quiz">
+        <div class="container">
+            <div class="quiz-header">
+                <h2 class="quiz-title">Personalized Beauty Consultation</h2>
+                <p>Get AI-powered recommendations tailored to your unique beauty needs</p>
+            </div>
+            
+            <form id="beautyQuizForm" class="quiz-form">
+                <div class="form-group">
+                    <label class="form-label" for="customerName">Full Name *</label>
+                    <input type="text" id="customerName" name="customerName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Skin Type *</label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="skinType" value="normal" required>
+                            <span>Normal</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="skinType" value="oily" required>
+                            <span>Oily</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="skinType" value="dry" required>
+                            <span>Dry</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="skinType" value="combination" required>
+                            <span>Combination</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="skinType" value="sensitive" required>
+                            <span>Sensitive</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Skin Concerns (Select all that apply)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skinConcerns" value="acne">
+                            <span>Acne</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skinConcerns" value="aging">
+                            <span>Aging</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skinConcerns" value="dark-spots">
+                            <span>Dark Spots</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skinConcerns" value="uneven-tone">
+                            <span>Uneven Tone</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skinConcerns" value="dryness">
+                            <span>Dryness</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="skinConcerns" value="sensitivity">
+                            <span>Sensitivity</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Preferred Style *</label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="preferredStyle" value="natural" required>
+                            <span>Natural</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="preferredStyle" value="glamorous" required>
+                            <span>Glamorous</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="preferredStyle" value="professional" required>
+                            <span>Professional</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="preferredStyle" value="trendy" required>
+                            <span>Trendy</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="preferredStyle" value="classic" required>
+                            <span>Classic</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Budget Range *</label>
+                    <div class="radio-group">
+                        <label class="radio-item">
+                            <input type="radio" name="budgetRange" value="budget" required>
+                            <span>Budget (₹500-₹2000)</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="budgetRange" value="mid-range" required>
+                            <span>Mid-Range (₹2000-₹5000)</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="budgetRange" value="premium" required>
+                            <span>Premium (₹5000-₹10000)</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="budgetRange" value="luxury" required>
+                            <span>Luxury (₹10000+)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="allergies">Allergies (comma-separated, if any)</label>
+                    <input type="text" id="allergies" name="allergies" class="form-control" placeholder="e.g., nuts, fragrances, latex">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="previousTreatments">Previous Treatments (comma-separated, if any)</label>
+                    <input type="text" id="previousTreatments" name="previousTreatments" class="form-control" placeholder="e.g., facial, hair coloring, manicure">
+                </div>
+                
+                <div class="quiz-actions">
+                    <button type="button" class="btn-quiz secondary" id="resetQuiz">Reset Form</button>
+                    <button type="button" class="btn-quiz primary" id="submitQuiz">Get My Recommendations</button>
+                </div>
+            </form>
+            
+            <div class="loading-spinner" id="loadingSpinner"></div>
+            
+            <div class="recommendations-panel" id="recommendationsPanel">
+                <h3 class="recommendations-title">Your Personalized Beauty Recommendations</h3>
+                <div id="recommendationsList">
+                    <!-- Recommendations will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>JMK Beauty</h3>
+                    <p>Your trusted partner in beauty and wellness. We're committed to making you look and feel your absolute best.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#about">About</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="virtual-tryon.html">Virtual Try-On</a></li>
+                        <li><a href="index.html#portfolio">Portfolio</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="index.html#services">Hair Services</a></li>
+                        <li><a href="index.html#services">Nail Care</a></li>
+                        <li><a href="index.html#services">Facial & Skincare</a></li>
+                        <li><a href="index.html#services">Massage Therapy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link">Facebook</a>
+                        <a href="https://www.instagram.com/jmk_beauty_salon/" class="social-link" target="_blank">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 JMK Beauty Salon and Spa. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="virtual-tryon.js"></script>
+</body>
+</html>

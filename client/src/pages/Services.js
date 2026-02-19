@@ -7,26 +7,26 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get('/api/services');
+        const data = response.data || [];
+        if (Array.isArray(data) && data.length > 0) {
+          setServices(data);
+        } else {
+          setServices(getDefaultServices());
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        // Fallback to default services if API fails
+        setServices(getDefaultServices());
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchServices();
   }, []);
-
-  const fetchServices = async () => {
-    try {
-      const response = await axios.get('/api/services');
-      const data = response.data || [];
-      if (Array.isArray(data) && data.length > 0) {
-        setServices(data);
-      } else {
-        setServices(getDefaultServices());
-      }
-    } catch (error) {
-      console.error('Error fetching services:', error);
-      // Fallback to default services if API fails
-      setServices(getDefaultServices());
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getDefaultServices = () => [
     {

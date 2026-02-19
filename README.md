@@ -253,6 +253,7 @@ npm run build
 ## 📄 License
 
 This project is created for JMK Beauty Salon and Spa.
+Shremya Gupta
 
 ## 🤝 Support
 
