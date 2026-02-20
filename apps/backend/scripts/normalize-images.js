@@ -1,6 +1,6 @@
 /*
  Node script to normalize filenames in `images/portfolio/` and update
- `client/public/portfolio-manifest.json` accordingly.
+ `apps/frontend/public/portfolio-manifest.json` accordingly.
 
  This script will:
  - read files in images/portfolio
@@ -16,9 +16,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const root = path.join(__dirname, '..', '..');
-const imagesDir = path.join(root, 'images', 'portfolio');
-const manifestPath = path.join(root, 'client', 'public', 'portfolio-manifest.json');
+const root = path.join(__dirname, '..', '..', '..');
+const imagesDir = path.join(root, 'shared', 'assets', 'images', 'portfolio');
+const manifestPath = path.join(root, 'apps', 'frontend', 'public', 'portfolio-manifest.json');
 
 function normalizeName(name) {
   return name

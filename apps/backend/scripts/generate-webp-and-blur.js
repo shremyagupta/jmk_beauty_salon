@@ -1,6 +1,6 @@
 /*
 Generate WebP variants for thumbnails and tiny blurred placeholders.
-Updates `client/public/portfolio-manifest.json` adding `webpSrcSet` and `blurDataURL`.
+Updates `apps/frontend/public/portfolio-manifest.json` adding `webpSrcSet` and `blurDataURL`.
 
 Requirements: `sharp` is already installed.
 Run:
@@ -10,10 +10,10 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const root = path.join(__dirname, '..', '..');
-const imagesDir = path.join(root, 'images', 'portfolio');
+const root = path.join(__dirname, '..', '..', '..');
+const imagesDir = path.join(root, 'shared', 'assets', 'images', 'portfolio');
 const thumbsDir = path.join(imagesDir, 'thumbs');
-const manifestPath = path.join(root, 'client', 'public', 'portfolio-manifest.json');
+const manifestPath = path.join(root, 'apps', 'frontend', 'public', 'portfolio-manifest.json');
 
 const SIZES = [320, 480, 768];
 const BLUR_SIZE = 20; // tiny blurred placeholder width

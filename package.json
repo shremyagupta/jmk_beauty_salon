@@ -2,15 +2,15 @@
   "name": "jmk-beauty-salon",
   "version": "1.0.0",
   "description": "JMK Beauty Salon and Spa - Full Stack Application",
-  "main": "server/index.js",
+  "main": "apps/backend/index.js",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd server && npm run dev",
-    "client": "cd client && npm start",
-    "install-server": "cd server && npm install",
-    "install-client": "cd client && npm install",
+    "server": "cd apps/backend && npm run dev",
+    "client": "cd apps/frontend && npm start",
+    "install-server": "cd apps/backend && npm install",
+    "install-client": "cd apps/frontend && npm install",
     "install-all": "npm run install-server && npm run install-client",
-    "build": "cd client && npm run build"
+    "build": "cd apps/frontend && npm run build"
   },
   "keywords": ["salon", "spa", "beauty"],
   "author": "",

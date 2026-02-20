@@ -39,9 +39,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Serve static images placed in the repository root `images/` folder
+// Serve static images stored under shared/assets/images
 // Use aggressive caching for image assets and allow compression to reduce size
-app.use('/images', express.static(path.join(__dirname, '..', 'images'), {
+const staticImagesDir = path.join(__dirname, '..', '..', 'shared', 'assets', 'images');
+app.use('/images', express.static(staticImagesDir, {
   maxAge: '7d', // cache images for 7 days
   setHeaders: (res, filePath) => {
     // Better caching for immutable image assets

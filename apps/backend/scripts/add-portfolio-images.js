@@ -7,7 +7,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/jmkbea
 // Portfolio items with image URLs
 // INSTRUCTIONS: 
 // 1. Download your best bridal makeup images from Instagram
-// 2. Save them to: client/public/images/portfolio/bridal-makeup/
+// 2. Save them to: shared/assets/images/portfolio/bridal-makeup/
 // 3. Update the imageUrl paths below to match your file names
 // 4. Run: npm run add-images
 
@@ -127,7 +127,7 @@ async function addPortfolioImages() {
     console.log(`Successfully added ${createdItems.length} portfolio items with images!`);
 
     console.log('\nNext steps:');
-    console.log('1. Place your images in: client/public/images/portfolio/');
+    console.log('1. Place your images in: shared/assets/images/portfolio/');
     console.log('2. Or update imageUrl to point to your cloud storage/CDN');
     console.log('3. Make sure image paths match the imageUrl in the database');
 

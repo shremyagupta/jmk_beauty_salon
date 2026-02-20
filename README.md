@@ -28,20 +28,26 @@ A modern, full-stack web application for JMK Beauty Salon and Spa built with Rea
 
 ```
 jmk-beauty-salon/
-├── client/                 # React frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   ├── App.js
-│   │   └── index.js
-│   └── package.json
-├── server/                 # Node.js backend
-│   ├── models/            # MongoDB models
-│   ├── routes/            # API routes
-│   ├── index.js           # Server entry point
-│   └── package.json
-├── package.json           # Root package.json
+├── apps/
+│   ├── frontend/           # React SPA
+│   │   ├── public/
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   ├── App.js
+│   │   │   └── index.js
+│   │   └── package.json
+│   └── backend/            # Node.js/Express API
+│       ├── models/
+│       ├── routes/
+│       ├── middleware/
+│       ├── scripts/
+│       ├── index.js
+│       └── package.json
+├── shared/
+│   └── assets/
+│       └── images/         # Source images & videos served by the API
+├── package.json            # Root scripts / tooling
 └── README.md
 ```
 
@@ -59,32 +65,32 @@ jmk-beauty-salon/
 # Install root dependencies
 npm install
 
-# Install all dependencies (server + client)
+# Install all dependencies (backend + frontend)
 npm run install-all
 ```
 
 Or install separately:
 
 ```bash
-# Server dependencies
-cd server
+# Backend dependencies
+cd apps/backend
 npm install
 
-# Client dependencies
-cd ../client
+# Frontend dependencies
+cd ../frontend
 npm install
 ```
 
 ### Step 2: Configure Environment Variables
 
-Create a `.env` file in the `server` directory:
+Create a `.env` file in the `apps/backend` directory:
 
 ```bash
-cd server
+cd apps/backend
 cp .env.example .env
 ```
 
-Edit `server/.env` with your configuration:
+Edit `apps/backend/.env` with your configuration:
 
 ```env
 PORT=5000
@@ -115,7 +121,7 @@ mongod
 Populate the database with sample data:
 
 ```bash
-cd server
+cd apps/backend
 npm run seed
 ```
 
@@ -134,14 +140,14 @@ Terminal 1 - Server:
 ```bash
 npm run server
 # or
-cd server && npm run dev
+cd apps/backend && npm run dev
 ```
 
 Terminal 2 - Client:
 ```bash
 npm run client
 # or
-cd client && npm start
+cd apps/frontend && npm start
 ```
 
 The application will be available at:
@@ -209,10 +215,10 @@ The application will be available at:
 ## 🎨 Customization
 
 ### Update Contact Information
-Edit `client/src/pages/Contact.js` to update address, phone, email, and hours.
+Edit `apps/frontend/src/pages/Contact.js` to update address, phone, email, and hours.
 
 ### Change Colors
-Edit CSS variables in `client/src/index.css`:
+Edit CSS variables in `apps/frontend/src/index.css`:
 ```css
 :root {
     --primary-color: #d4a574;
@@ -228,10 +234,10 @@ Replace placeholder divs with actual images in the portfolio items. Update the `
 
 ```bash
 # Build React app
-cd client
+cd apps/frontend
 npm run build
 
-# The build folder will be created in client/build/
+# The build folder will be created in apps/frontend/build/
 ```
 
 ## 📝 Notes

@@ -1,6 +1,6 @@
 /*
-Generate image thumbnails for images referenced in client/public/portfolio-manifest.json
-Creates thumbnails in images/portfolio/thumbs and updates the manifest with `thumbUrl` entries.
+Generate image thumbnails for images referenced in apps/frontend/public/portfolio-manifest.json
+Creates thumbnails in shared/assets/images/portfolio/thumbs and updates the manifest with `thumbUrl` entries.
 
 Requirements:
 - `sharp` must be installed in the server project: `npm install sharp`
@@ -13,10 +13,10 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const root = path.join(__dirname, '..', '..');
-const imagesDir = path.join(root, 'images', 'portfolio');
+const root = path.join(__dirname, '..', '..', '..');
+const imagesDir = path.join(root, 'shared', 'assets', 'images', 'portfolio');
 const thumbsDir = path.join(imagesDir, 'thumbs');
-const manifestPath = path.join(root, 'client', 'public', 'portfolio-manifest.json');
+const manifestPath = path.join(root, 'apps', 'frontend', 'public', 'portfolio-manifest.json');
 
 const THUMB_WIDTH = 480;
 

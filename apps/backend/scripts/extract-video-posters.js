@@ -1,6 +1,6 @@
 /*
 Extract a poster image (single frame) for each video referenced in
-client/public/portfolio-manifest.json and write `posterUrl` into manifest.
+apps/frontend/public/portfolio-manifest.json and write `posterUrl` into manifest.
 Uses @ffmpeg-installer/ffmpeg and fluent-ffmpeg.
 
 Run: node scripts/extract-video-posters.js
@@ -11,10 +11,16 @@ const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
 const ffmpeg = require('fluent-ffmpeg');
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
-const root = path.join(__dirname, '..', '..');
-const imagesDir = path.join(root, 'images', 'portfolio');
+const root = path.join(__dirname, '..', '..', '..');
+const imagesDir = path.join(root, 'shared', 'assets', 'images', 'portfolio');
 const thumbsDir = path.join(imagesDir, 'thumbs');
-const manifestPath = path.join(root, 'client', 'public', 'portfolio-manifest.json');
+const manifestPath = path.join(root, 'apps', 'frontend', 'public', 'portfolio-manifest.json');
+
+const assetPathFromUrl = (url) => {
+  if (!url) return null;
+  const relativePath = url.replace(/^\//, '');
+  return path.join(root, 'shared', 'assets', relativePath);
+};
 
 async function ensureDir(dir) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -56,7 +62,7 @@ function extractPoster(videoPath, outPath) {
       if (entry.type === 'video' && entry.videoUrl) {
         const fn = getFilenameFromUrl(entry.videoUrl);
         if (!fn) continue;
-        const videoPath = path.join(root, entry.videoUrl.startsWith('/') ? entry.videoUrl.slice(1) : entry.videoUrl);
+        const videoPath = assetPathFromUrl(entry.videoUrl);
         if (!fs.existsSync(videoPath)) {
           console.warn('Video not found:', videoPath);
           continue;

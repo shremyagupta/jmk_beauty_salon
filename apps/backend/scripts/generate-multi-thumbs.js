@@ -1,6 +1,6 @@
 /*
-Generate responsive thumbnails (multiple widths) for images referenced in client/public/portfolio-manifest.json
-Creates thumbnails in images/portfolio/thumbs/ and updates the manifest with `srcSet` and `thumbUrl` (default)
+Generate responsive thumbnails (multiple widths) for images referenced in apps/frontend/public/portfolio-manifest.json
+Creates thumbnails in shared/assets/images/portfolio/thumbs/ and updates the manifest with `srcSet` and `thumbUrl` (default)
 
 Requirements:
 - `sharp` must be installed in the server project (already installed previously)
@@ -13,10 +13,10 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const root = path.join(__dirname, '..', '..');
-const imagesDir = path.join(root, 'images', 'portfolio');
+const root = path.join(__dirname, '..', '..', '..');
+const imagesDir = path.join(root, 'shared', 'assets', 'images', 'portfolio');
 const thumbsDir = path.join(imagesDir, 'thumbs');
-const manifestPath = path.join(root, 'client', 'public', 'portfolio-manifest.json');
+const manifestPath = path.join(root, 'apps', 'frontend', 'public', 'portfolio-manifest.json');
 
 const SIZES = [320, 480, 768];
 
