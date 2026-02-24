@@ -34,14 +34,12 @@ function getFilenameFromUrl(url) {
 function extractPoster(videoPath, outPath) {
   return new Promise((resolve, reject) => {
     ffmpeg(videoPath)
-      .screenshots({
-        timestamps: ['00:00:01.000', '00:00:02.000'],
-        filename: path.basename(outPath),
-        folder: path.dirname(outPath),
-        size: '1280x?'
-      })
+      .seekInput('00:00:01.000')
+      .frames(1)
+      .outputOptions(['-vf', 'scale=1280:-1'])
       .on('end', () => resolve(outPath))
-      .on('error', (err) => reject(err));
+      .on('error', (err) => reject(err))
+      .save(outPath);
   });
 }
 

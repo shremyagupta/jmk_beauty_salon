@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "jmk-beauty-salon",
   "version": "1.0.0",
   "description": "JMK Beauty Salon and Spa - Full Stack Application",
